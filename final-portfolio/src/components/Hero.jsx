@@ -6,7 +6,6 @@ export default function Hero() {
 
   useEffect(() => {
     let ctx = gsap.context(() => {
-      // Staggered reveal for the hero text
       gsap.from('.reveal-text', {
         y: 100,
         opacity: 0,
@@ -24,7 +23,7 @@ export default function Hero() {
       });
     }, containerRef);
 
-    return () => ctx.revert(); // Cleanup on unmount
+    return () => ctx.revert(); 
   }, []);
 
   return (
