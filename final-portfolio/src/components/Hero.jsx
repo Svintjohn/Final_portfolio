@@ -3,55 +3,65 @@ import gsap from 'gsap';
 
 export default function Hero() {
   const containerRef = useRef(null);
+  const textRef = useRef(null);
 
   useEffect(() => {
     let ctx = gsap.context(() => {
+      // Entrance animation
       gsap.from('.reveal-text', {
-        y: 100,
+        y: 120,
         opacity: 0,
-        duration: 1.5,
-        stagger: 0.1,
+        duration: 1.8,
+        stagger: 0.15,
         ease: 'power4.out',
-        delay: 0.2
       });
       
-      gsap.from('.reveal-fade', {
-        opacity: 0,
-        duration: 2,
-        delay: 1,
-        ease: 'power2.out'
-      });
+      // Mouse Parallax Effect
+      const handleMouseMove = (e) => {
+        const { clientX, clientY } = e;
+        const xPos = (clientX / window.innerWidth - 0.5) * 40; 
+        const yPos = (clientY / window.innerHeight - 0.5) * 40;
+
+        gsap.to(textRef.current, {
+          x: xPos,
+          y: yPos,
+          duration: 1,
+          ease: 'power3.out'
+        });
+      };
+
+      window.addEventListener('mousemove', handleMouseMove);
+      return () => window.removeEventListener('mousemove', handleMouseMove);
     }, containerRef);
 
     return () => ctx.revert(); 
   }, []);
 
   return (
-    <section ref={containerRef} className="section-padding" style={{ height: '100vh', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-      <div style={{ overflow: 'hidden' }}>
-        <p className="mono-tag reveal-text" style={{ marginBottom: '1rem' }}>SYSTEM: ONLINE_</p>
-      </div>
-      <div style={{ overflow: 'hidden' }}>
-        <h2 className="reveal-text" style={{ fontSize: '4rem', fontWeight: 700, lineHeight: 1.1 }}>
-          FINDING PATTERNS
-        </h2>
-      </div>
-      <div style={{ overflow: 'hidden' }}>
-        <h2 className="reveal-text" style={{ fontSize: '4rem', fontWeight: 700, lineHeight: 1.1, color: 'var(--text-muted)' }}>
-          IN THE NOISE.
-        </h2>
-      </div>
-      
-      <div className="reveal-fade" style={{ marginTop: '3rem', display: 'flex', gap: '2rem' }}>
-        <div style={{ borderLeft: '2px solid var(--accent-blue)', paddingLeft: '1rem' }}>
-          <h4 style={{ fontFamily: 'var(--font-mono)', fontSize: '0.8rem', color: 'var(--text-muted)' }}>SPECIALIZATION</h4>
-          <p style={{ fontWeight: 600 }}>Python & SQL Architecture</p>
+    <section ref={containerRef} className="section-padding" style={{ height: '100vh', display: 'flex', flexDirection: 'column', justifyContent: 'center', position: 'relative', overflow: 'hidden' }}>
+      <div ref={textRef} style={{ zIndex: 2 }}>
+        <div style={{ overflow: 'hidden' }}>
+          <p className="mono-tag reveal-text" style={{ marginBottom: '1.5rem', color: 'var(--accent-red)' }}>SYSTEM: ONLINE_</p>
         </div>
-        <div style={{ borderLeft: '2px solid var(--accent-yellow)', paddingLeft: '1rem' }}>
-          <h4 style={{ fontFamily: 'var(--font-mono)', fontSize: '0.8rem', color: 'var(--text-muted)' }}>VISUALIZATION</h4>
-          <p style={{ fontWeight: 600 }}>Power BI & Analytics</p>
+        <div style={{ overflow: 'hidden' }}>
+          <h2 className="reveal-text" style={{ fontSize: '5.5rem', letterSpacing: '-0.04em', fontWeight: 900, lineHeight: 1 }}>
+            FINDING
+          </h2>
+        </div>
+        <div style={{ overflow: 'hidden' }}>
+          <h2 className="reveal-text" style={{ fontSize: '5.5rem', letterSpacing: '-0.04em', fontWeight: 900, lineHeight: 1, color: 'transparent', WebkitTextStroke: '2px var(--text-muted)' }}>
+            PATTERNS
+          </h2>
+        </div>
+        <div style={{ overflow: 'hidden' }}>
+          <h2 className="reveal-text" style={{ fontSize: '5.5rem', letterSpacing: '-0.04em', fontWeight: 900, lineHeight: 1 }}>
+            IN THE NOISE.
+          </h2>
         </div>
       </div>
+
+      {/* Decorative ambient background element */}
+      <div style={{ position: 'absolute', top: '20%', right: '-10%', width: '500px', height: '500px', background: 'radial-gradient(circle, rgba(0,210,255,0.1) 0%, transparent 70%)', filter: 'blur(40px)', zIndex: 0 }} />
     </section>
   );
 }

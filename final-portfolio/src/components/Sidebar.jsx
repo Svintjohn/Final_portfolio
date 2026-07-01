@@ -31,7 +31,7 @@ export default function Sidebar() {
       </div>
 
       {/* Radar Navigation Links */}
-      <nav style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+      <nav style={{ display: 'flex', flexDirection: 'column', gap: '1.2rem' }}>
         {navLinks.map((link) => (
           <a 
             key={link.id} 
@@ -50,13 +50,13 @@ export default function Sidebar() {
       </nav>
 
       <div style={{ display: 'flex', gap: '1.5rem' }}>
-        <a href="https://github.com/Svintjohn" target="_blank" rel="noreferrer" style={{ color: 'var(--text-muted)' }}>
+        <a href="https://github.com/Svintjohn" target="_blank" rel="noreferrer" style={{ color: 'var(--text-muted)', transition: 'color 0.3s' }} onMouseEnter={e => e.currentTarget.style.color = 'var(--accent-blue)'} onMouseLeave={e => e.currentTarget.style.color = 'var(--text-muted)'}>
           <FaGithub size={24} />
         </a>
-        <a href="https://www.linkedin.com/in/john-benedict-berceles-8787b0228" target="_blank" rel="noreferrer" style={{ color: 'var(--text-muted)' }}>
+        <a href="https://www.linkedin.com/in/john-benedict-berceles-8787b0228" target="_blank" rel="noreferrer" style={{ color: 'var(--text-muted)', transition: 'color 0.3s' }} onMouseEnter={e => e.currentTarget.style.color = 'var(--accent-blue)'} onMouseLeave={e => e.currentTarget.style.color = 'var(--text-muted)'}>
           <FaLinkedin size={24} />
         </a>
-        <a href="mailto:bercelesjohnbenedict25@gmail.com" style={{ color: 'var(--text-muted)' }}>
+        <a href="mailto:bercelesjohnbenedict25@gmail.com" style={{ color: 'var(--text-muted)', transition: 'color 0.3s' }} onMouseEnter={e => e.currentTarget.style.color = 'var(--accent-blue)'} onMouseLeave={e => e.currentTarget.style.color = 'var(--text-muted)'}>
           <Mail size={24} />
         </a>
       </div>

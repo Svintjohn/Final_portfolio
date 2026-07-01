@@ -1,73 +1,81 @@
 import React from 'react';
+import gsap from 'gsap';
 import { ArrowUpRight } from 'lucide-react';
 
 const projectData = [
   {
     title: "Legend of Gyro",
-    desc: "A web-accessible 2D endless runner built using Python and Pygame. Designed with a dystopian cyberpunk aesthetic, it serves as an interactive technical showcase.",
-    tags: ["Python", "Pygame", "SQLite"],
+    desc: "A web-accessible 2D endless runner built using Python and Pygame.",
+    tags: ["Python", "Pygame"],
     link: "https://github.com/Svintjohn/Legend-of-Gyro"
   },
   {
-    title: "Tech Inventory System",
-    desc: "A simple and efficient desktop-based inventory management system allowing users to add, edit, delete, and generate reports for technology products.",
-    tags: ["Python 3.x", "MySQL", "XAMPP"],
+    title: "Tech Inventory",
+    desc: "Desktop-based inventory management system for tech hardware.",
+    tags: ["Python", "MySQL"],
     link: "https://github.com/Svintjohn/PyStock-Manager"
   },
   {
-    title: "SipatLigtas Visualizer",
-    desc: "Hyperlocal hazard visualizer and mapping tool designed for disaster resilience and data-driven emergency response.",
-    tags: ["React", "Leaflet", "Data Viz"],
+    title: "SipatLigtas",
+    desc: "Hyperlocal hazard visualizer mapping tool for disaster resilience.",
+    tags: ["React", "Leaflet"],
     link: "#"
   }
 ];
 
 export default function Projects() {
+  const handleMouseEnter = (e) => {
+    gsap.to(e.currentTarget.querySelector('.project-arrow'), { x: 10, y: -10, color: 'var(--accent-blue)', duration: 0.3 });
+    gsap.to(e.currentTarget.querySelector('.project-bg'), { scaleY: 1, duration: 0.4, ease: 'power3.out' });
+  };
+
+  const handleMouseLeave = (e) => {
+    gsap.to(e.currentTarget.querySelector('.project-arrow'), { x: 0, y: 0, color: 'var(--text-muted)', duration: 0.3 });
+    gsap.to(e.currentTarget.querySelector('.project-bg'), { scaleY: 0, duration: 0.4, ease: 'power3.out' });
+  };
+
   return (
     <section id="projects" className="section-padding reveal-on-scroll">
       <h3 className="mono-tag" style={{ marginBottom: '3rem' }}>// DEPLOYED_SYSTEMS</h3>
       
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+      <div style={{ borderTop: '1px solid rgba(255,255,255,0.1)' }}>
         {projectData.map((project, index) => (
           <a 
             key={index} 
             href={project.link}
             target="_blank"
             rel="noreferrer"
-            className="glass-card"
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
             style={{
-              display: 'block', padding: '2.5rem',
-              textDecoration: 'none', color: 'inherit',
-              transition: 'all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.borderColor = 'var(--accent-blue)';
-              e.currentTarget.style.transform = 'scale(1.02) translateX(10px)';
-              e.currentTarget.style.boxShadow = '0 15px 35px rgba(0, 210, 255, 0.1)';
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.borderColor = 'rgba(255,255,255,0.05)';
-              e.currentTarget.style.transform = 'scale(1) translateX(0)';
-              e.currentTarget.style.boxShadow = 'none';
+              display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+              padding: '3rem 1rem', textDecoration: 'none', color: 'inherit',
+              borderBottom: '1px solid rgba(255,255,255,0.1)',
+              position: 'relative', overflow: 'hidden'
             }}
           >
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-              <div>
-                <h4 style={{ fontSize: '1.6rem', marginBottom: '0.8rem', color: 'var(--text-main)', fontWeight: 700 }}>
-                  {project.title}
-                </h4>
-                <p style={{ color: 'var(--text-muted)', fontSize: '1rem', maxWidth: '85%', marginBottom: '1.5rem', lineHeight: 1.6 }}>
-                  {project.desc}
-                </p>
-                <div style={{ display: 'flex', gap: '0.8rem', flexWrap: 'wrap' }}>
-                  {project.tags.map(tag => (
-                    <span key={tag} style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', padding: '0.4rem 1rem', background: 'rgba(0, 210, 255, 0.1)', border: '1px solid rgba(0, 210, 255, 0.2)', color: 'var(--accent-blue)', borderRadius: '20px' }}>
-                      {tag}
-                    </span>
-                  ))}
-                </div>
+            {/* Hover Background Reveal */}
+            <div className="project-bg" style={{ position: 'absolute', bottom: 0, left: 0, width: '100%', height: '100%', background: 'rgba(0, 210, 255, 0.05)', transformOrigin: 'bottom', transform: 'scaleY(0)', zIndex: 0 }} />
+            
+            <div style={{ zIndex: 1, width: '40%' }}>
+              <h4 style={{ fontSize: '2.5rem', fontWeight: 700, margin: 0, transition: 'color 0.3s' }}>
+                {project.title}
+              </h4>
+            </div>
+            
+            <div style={{ zIndex: 1, width: '45%' }}>
+              <p style={{ color: 'var(--text-muted)', fontSize: '1rem', marginBottom: '1rem', lineHeight: 1.6 }}>{project.desc}</p>
+              <div style={{ display: 'flex', gap: '0.8rem' }}>
+                {project.tags.map(tag => (
+                  <span key={tag} style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: 'var(--text-main)', border: '1px solid rgba(255,255,255,0.2)', padding: '0.2rem 0.8rem', borderRadius: '20px' }}>
+                    {tag}
+                  </span>
+                ))}
               </div>
-              <ArrowUpRight color="var(--accent-red)" style={{ flexShrink: 0, transition: 'transform 0.3s ease' }} />
+            </div>
+
+            <div style={{ zIndex: 1 }}>
+              <ArrowUpRight className="project-arrow" size={40} color="var(--text-muted)" />
             </div>
           </a>
         ))}
