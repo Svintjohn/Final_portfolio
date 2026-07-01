@@ -1,43 +1,54 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
+import gsap from 'gsap';
 
-const skills = [
-  { name: 'Python (Pandas, NumPy, SciPy)', level: 92 },
-  { name: 'Advanced Excel', level: 90 },
-  { name: 'Power BI & Data Visualization', level: 85 },
-  { name: 'Backend Integration', level: 85 },
-  { name: 'SQL / Database Management', level: 84 },
-];
+export default function Cursor() {
+  const cursorRef = useRef(null);
 
-export default function Skills() {
+  useEffect(() => {
+    const cursor = cursorRef.current;
+    
+    const xTo = gsap.quickTo(cursor, "x", { duration: 0.15, ease: "power3.out" });
+    const yTo = gsap.quickTo(cursor, "y", { duration: 0.15, ease: "power3.out" });
+
+    const move = (e) => { xTo(e.clientX); yTo(e.clientY); };
+    window.addEventListener("mousemove", move);
+
+    const initHoverEffects = () => {
+      const interactables = document.querySelectorAll('a, button');
+      interactables.forEach(el => {
+        el.addEventListener('mouseenter', () => {
+          gsap.to(cursor, { 
+            scale: 3, 
+            backgroundColor: 'rgba(37, 99, 235, 0.1)', 
+            border: '2px solid var(--accent-primary)', 
+            duration: 0.3, ease: "back.out(2)"
+          });
+        });
+        el.addEventListener('mouseleave', () => {
+          gsap.to(cursor, { 
+            scale: 1, 
+            backgroundColor: 'var(--accent-primary)', 
+            border: 'none', 
+            duration: 0.3 
+          });
+        });
+      });
+    };
+
+    setTimeout(initHoverEffects, 1000);
+
+    return () => window.removeEventListener("mousemove", move);
+  }, []);
+
   return (
-    <section id="skills" className="section-padding reveal-on-scroll">
-      <h3 className="mono-tag" style={{ marginBottom: '3rem' }}>// TECHNICAL_CAPABILITIES</h3>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
-        {skills.map(s => (
-          <div 
-            key={s.name}
-            style={{ padding: '0.5rem 0', cursor: 'none' }}
-            onMouseEnter={(e) => e.currentTarget.querySelector('.skill-bar').style.boxShadow = '0 0 20px rgba(0, 210, 255, 0.8)'}
-            onMouseLeave={(e) => e.currentTarget.querySelector('.skill-bar').style.boxShadow = '0 0 10px rgba(0, 210, 255, 0.5)'}
-          >
-            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.8rem', fontFamily: 'var(--font-mono)', fontSize: '0.9rem' }}>
-              <span style={{ color: 'var(--text-main)' }}>{s.name}</span>
-              <span style={{ color: 'var(--accent-yellow)' }}>{s.level}%</span>
-            </div>
-            <div style={{ height: '2px', background: 'rgba(255,255,255,0.1)', width: '100%', position: 'relative' }}>
-              <div 
-                className="skill-bar"
-                style={{ 
-                  position: 'absolute', top: 0, left: 0, height: '100%', 
-                  width: `${s.level}%`, background: 'var(--accent-blue)',
-                  boxShadow: '0 0 10px rgba(0, 210, 255, 0.5)',
-                  transition: 'box-shadow 0.3s ease'
-                }} 
-              />
-            </div>
-          </div>
-        ))}
-      </div>
-    </section>
+    <div 
+      ref={cursorRef} 
+      style={{ 
+        position: 'fixed', top: 0, left: 0, width: '16px', height: '16px', 
+        borderRadius: '50%', backgroundColor: 'var(--accent-primary)', 
+        pointerEvents: 'none', zIndex: 9999, transform: 'translate(-50%, -50%)',
+        boxShadow: '0 4px 10px rgba(37, 99, 235, 0.4)'
+      }} 
+    />
   );
 }

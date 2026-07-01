@@ -7,15 +7,10 @@ export default function Cursor() {
   useEffect(() => {
     const cursor = cursorRef.current;
     
-    // QuickTo is highly optimized for tracking mouse events smoothly
     const xTo = gsap.quickTo(cursor, "x", { duration: 0.15, ease: "power3.out" });
     const yTo = gsap.quickTo(cursor, "y", { duration: 0.15, ease: "power3.out" });
 
-    const move = (e) => { 
-      xTo(e.clientX); 
-      yTo(e.clientY); 
-    };
-    
+    const move = (e) => { xTo(e.clientX); yTo(e.clientY); };
     window.addEventListener("mousemove", move);
 
     const initHoverEffects = () => {
@@ -23,17 +18,16 @@ export default function Cursor() {
       interactables.forEach(el => {
         el.addEventListener('mouseenter', () => {
           gsap.to(cursor, { 
-            scale: 4, 
-            backgroundColor: 'transparent', 
-            border: '1px solid var(--accent-blue)', 
-            duration: 0.3,
-            ease: "back.out(1.5)"
+            scale: 3, 
+            backgroundColor: 'rgba(37, 99, 235, 0.1)', 
+            border: '2px solid var(--accent-primary)', 
+            duration: 0.3, ease: "back.out(2)"
           });
         });
         el.addEventListener('mouseleave', () => {
           gsap.to(cursor, { 
             scale: 1, 
-            backgroundColor: 'var(--accent-red)', 
+            backgroundColor: 'var(--accent-primary)', 
             border: 'none', 
             duration: 0.3 
           });
@@ -41,7 +35,6 @@ export default function Cursor() {
       });
     };
 
-    // Delay initialization to ensure DOM is painted
     setTimeout(initHoverEffects, 1000);
 
     return () => window.removeEventListener("mousemove", move);
@@ -52,9 +45,9 @@ export default function Cursor() {
       ref={cursorRef} 
       style={{ 
         position: 'fixed', top: 0, left: 0, width: '16px', height: '16px', 
-        borderRadius: '50%', backgroundColor: 'var(--accent-red)', 
+        borderRadius: '50%', backgroundColor: 'var(--accent-primary)', 
         pointerEvents: 'none', zIndex: 9999, transform: 'translate(-50%, -50%)',
-        mixBlendMode: 'difference' // Pro-level touch for dynamic contrast
+        boxShadow: '0 4px 10px rgba(37, 99, 235, 0.4)'
       }} 
     />
   );

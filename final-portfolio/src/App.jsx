@@ -12,14 +12,11 @@ import Cursor from './components/Cursor';
 
 export default function App() {
   useEffect(() => {
-    // 1. Initialize High-Performance Smooth Scrolling
     const lenis = new Lenis({
       duration: 1.2,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       orientation: 'vertical',
-      gestureOrientation: 'vertical',
       smoothWheel: true,
-      wheelMultiplier: 1.1,
     });
 
     function raf(time) {
@@ -28,7 +25,6 @@ export default function App() {
     }
     requestAnimationFrame(raf);
 
-    // 2. Intercept Sidebar Anchor Links for Smooth Scrolling
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
       anchor.addEventListener('click', function (e) {
         e.preventDefault();
@@ -36,43 +32,35 @@ export default function App() {
       });
     });
 
-    // 3. Global Scroll Reveal Animation for all sections
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
-          gsap.to(entry.target, { 
-            opacity: 1, 
-            y: 0, 
-            duration: 1.2, 
-            ease: 'power3.out' 
-          });
+          gsap.to(entry.target, { opacity: 1, y: 0, duration: 1, ease: 'back.out(1.2)' });
           observer.unobserve(entry.target);
         }
       });
-    }, { threshold: 0.15 });
+    }, { threshold: 0.1 });
 
-    // Initialize initial state for scroll elements
     document.querySelectorAll('.reveal-on-scroll').forEach(el => {
-      gsap.set(el, { opacity: 0, y: 50 });
+      gsap.set(el, { opacity: 0, y: 60 });
       observer.observe(el);
     });
 
-    return () => {
-      lenis.destroy();
-      observer.disconnect();
-    };
+    return () => { lenis.destroy(); observer.disconnect(); };
   }, []);
 
   return (
     <div style={{ display: 'flex', width: '100%', minHeight: '100vh' }}>
+      {/* Dynamic Backgrounds */}
+      <div className="animated-bg"></div>
+      <div className="blueprint-grid"></div>
+      
       <Cursor />
       
-      {/* Fixed Left Panel */}
       <div style={{ width: '40%', position: 'relative' }}>
         <Sidebar />
       </div>
 
-      {/* Scrollable Right Panel */}
       <main style={{ width: '60%', zIndex: 1, position: 'relative', paddingRight: '4rem' }}>
         <Hero />
         <Skills />

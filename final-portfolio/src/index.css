@@ -1,13 +1,16 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&family=JetBrains+Mono:wght@400;700&display=swap');
 
 :root {
-  --bg-dark: #030508;       
-  --bg-panel: rgba(10, 15, 24, 0.6); /* Translucent para sa glass effect */
-  --text-main: #ffffff;
-  --text-muted: #7887a5;
-  --accent-red: #e10600;    
-  --accent-blue: #00d2ff;   
-  --accent-yellow: var(--accent-blue);
+  /* Bright, Vibrant Theme */
+  --bg-main: #f8fafc;       
+  --bg-panel: rgba(255, 255, 255, 0.6); 
+  --text-main: #0f172a;
+  --text-muted: #64748b;
+  --accent-primary: #2563eb; /* Vibrant Royal Blue */
+  --accent-secondary: #f59e0b; /* Energetic Amber */
+  --accent-tertiary: #ec4899; /* Pink/Purple pop */
+  --border: rgba(15, 23, 42, 0.08);
+  
   --font-sans: 'Inter', sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
 }
@@ -20,9 +23,8 @@ html.lenis { height: auto; }
 .lenis.lenis-smooth { scroll-behavior: auto; }
 .lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
 
-/* Tinatago ang default cursor para sa Custom Cursor natin */
 body {
-  background-color: var(--bg-dark);
+  background-color: var(--bg-main);
   color: var(--text-main);
   font-family: var(--font-sans);
   overflow-x: hidden;
@@ -30,37 +32,33 @@ body {
   cursor: none; 
 }
 
-a, button {
-  cursor: none; /* Papalitan natin ng custom hover */
-}
+a, button { cursor: none; }
 
-/* Ambient Glowing Orbs sa Background */
-.ambient-glow-1, .ambient-glow-2 {
+/* Animated Mesh Gradient Background */
+.animated-bg {
   position: fixed;
-  border-radius: 50%;
-  filter: blur(120px);
-  z-index: -2;
-  pointer-events: none;
-}
-.ambient-glow-1 {
-  top: -10%; left: -10%;
-  width: 40vw; height: 40vw;
-  background: rgba(0, 210, 255, 0.05); /* Cyan Glow */
-}
-.ambient-glow-2 {
-  bottom: -10%; right: -10%;
-  width: 50vw; height: 50vw;
-  background: rgba(225, 6, 0, 0.05); /* Red Glow */
+  top: 0; left: 0; width: 100vw; height: 100vh;
+  background: linear-gradient(-45deg, #eff6ff, #f0fdf4, #fdf4ff, #fffbeb);
+  background-size: 400% 400%;
+  animation: gradientBG 15s ease infinite;
+  z-index: -3;
 }
 
-.telemetry-grid {
+@keyframes gradientBG {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Moving Grid to make it less minimal */
+.blueprint-grid {
   position: fixed;
   top: 0; left: 0; width: 100vw; height: 100vh;
   background-image: 
-    linear-gradient(to right, rgba(255, 255, 255, 0.015) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
-  background-size: 50px 50px; 
-  z-index: -1;
+    linear-gradient(to right, rgba(15, 23, 42, 0.03) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(15, 23, 42, 0.03) 1px, transparent 1px);
+  background-size: 40px 40px; 
+  z-index: -2;
   pointer-events: none;
 }
 
@@ -73,18 +71,22 @@ a, button {
 .mono-tag {
   font-family: var(--font-mono);
   font-size: 0.85rem;
-  color: var(--accent-red);
+  color: var(--accent-primary);
   text-transform: uppercase;
   letter-spacing: 2px;
+  background: rgba(37, 99, 235, 0.1);
+  padding: 0.4rem 1rem;
+  border-radius: 20px;
+  border: 1px solid rgba(37, 99, 235, 0.2);
+  display: inline-block;
 }
 
-.reveal-on-scroll { opacity: 0; transform: translateY(30px); }
-
-/* Glassmorphism Effect para sa mga Cards */
+/* Bright Glassmorphism */
 .glass-card {
   background: var(--bg-panel);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  border-radius: 12px;
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  box-shadow: 0 10px 40px -10px rgba(0,0,0,0.05), inset 0 0 0 1px rgba(255,255,255,0.5);
 }
