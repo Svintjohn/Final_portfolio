@@ -1,27 +1,39 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&family=JetBrains+Mono:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&family=JetBrains+Mono:wght@400;700;900&display=swap');
 
 :root {
-  /* Bright, Vibrant Theme */
+  /* Bright, Vibrant & Aggressive Theme Variables */
   --bg-main: #f8fafc;       
   --bg-panel: rgba(255, 255, 255, 0.6); 
   --text-main: #0f172a;
   --text-muted: #64748b;
-  --accent-primary: #2563eb; /* Vibrant Royal Blue */
-  --accent-secondary: #f59e0b; /* Energetic Amber */
-  --accent-tertiary: #ec4899; /* Pink/Purple pop */
-  --border: rgba(15, 23, 42, 0.08);
+  --accent-primary: #2563eb; /* Royal Blue */
+  --accent-secondary: #f59e0b; /* Amber */
+  --accent-tertiary: #ec4899; /* Pink */
+  --border: rgba(15, 23, 42, 0.1);
   
   --font-sans: 'Inter', sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
 }
 
+/* =========================================
+   1. GLOBAL RESET & CUSTOM CURSOR FORCE
+   ========================================= */
 * {
-  margin: 0; padding: 0; box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  /* FORCES ALL DEFAULT CURSORS TO HIDE PARA YUNG CUSTOM LANG ANG MAKITA */
+  cursor: none !important; 
 }
 
-html.lenis { height: auto; }
-.lenis.lenis-smooth { scroll-behavior: auto; }
+/* =========================================
+   2. LENIS SMOOTH SCROLL REQUIREMENT
+   ========================================= */
+html.lenis, html.lenis body { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
 .lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
+.lenis.lenis-stopped { overflow: hidden; }
+.lenis.lenis-smooth iframe { pointer-events: none; }
 
 body {
   background-color: var(--bg-main);
@@ -29,12 +41,11 @@ body {
   font-family: var(--font-sans);
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
-  cursor: none; 
 }
 
-a, button { cursor: none; }
-
-/* Animated Mesh Gradient Background */
+/* =========================================
+   3. BACKGROUNDS (KINETIC & ALIVE)
+   ========================================= */
 .animated-bg {
   position: fixed;
   top: 0; left: 0; width: 100vw; height: 100vh;
@@ -50,43 +61,141 @@ a, button { cursor: none; }
   100% { background-position: 0% 50%; }
 }
 
-/* Moving Grid to make it less minimal */
 .blueprint-grid {
   position: fixed;
   top: 0; left: 0; width: 100vw; height: 100vh;
   background-image: 
-    linear-gradient(to right, rgba(15, 23, 42, 0.03) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(15, 23, 42, 0.03) 1px, transparent 1px);
-  background-size: 40px 40px; 
+    linear-gradient(to right, rgba(37, 99, 235, 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(37, 99, 235, 0.05) 1px, transparent 1px);
+  background-size: 50px 50px; 
   z-index: -2;
   pointer-events: none;
 }
 
 .section-padding {
-  padding: 6rem 3rem; 
+  padding: 6rem 3rem;
   max-width: 1200px;
   margin: 0 auto;
 }
 
+/* =========================================
+   4. UI ELEMENTS (BUTTONS, TAGS, CARDS)
+   ========================================= */
+
+/* The Tags with continuous Light Sweep Animation */
 .mono-tag {
   font-family: var(--font-mono);
   font-size: 0.85rem;
   color: var(--accent-primary);
+  font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 2px;
   background: rgba(37, 99, 235, 0.1);
-  padding: 0.4rem 1rem;
+  padding: 0.5rem 1.2rem;
   border-radius: 20px;
-  border: 1px solid rgba(37, 99, 235, 0.2);
+  border: 1px solid rgba(37, 99, 235, 0.3);
   display: inline-block;
+  position: relative;
+  overflow: hidden;
 }
 
-/* Bright Glassmorphism */
+/* Light sweep effect running across the tag */
+.mono-tag::after {
+  content: "";
+  position: absolute;
+  top: 0; left: -100%;
+  width: 50%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.8), transparent);
+  animation: shineSweep 3s infinite cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes shineSweep {
+  0% { left: -100%; }
+  20% { left: 200%; }
+  100% { left: 200%; }
+}
+
+/* ANGAS GLASS CARDS with 3D Pop */
 .glass-card {
   background: var(--bg-panel);
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
   border: 1px solid var(--border);
   border-radius: 16px;
-  box-shadow: 0 10px 40px -10px rgba(0,0,0,0.05), inset 0 0 0 1px rgba(255,255,255,0.5);
+  box-shadow: 0 10px 40px -10px rgba(0,0,0,0.05), inset 0 0 0 1px rgba(255,255,255,0.8);
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.glass-card:hover {
+  transform: translateY(-8px) scale(1.01);
+  box-shadow: 0 25px 50px -12px rgba(37, 99, 235, 0.25), inset 0 0 0 1px #fff;
+  border-color: rgba(37, 99, 235, 0.4);
+}
+
+/* =========================================
+   5. INTERACTIVE VERCEL GLOW (Projects)
+   ========================================= */
+.glow-card::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background: radial-gradient(
+    600px circle at var(--mouse-x) var(--mouse-y), 
+    rgba(37, 99, 235, 0.15), 
+    transparent 40%
+  );
+  opacity: 0;
+  transition: opacity 0.5s;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.glow-card:hover::before {
+  opacity: 1;
+}
+
+/* =========================================
+   6. 3D GLITCH MARQUEE BACKGROUND
+   ========================================= */
+.marquee-container {
+  mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
+  -webkit-mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
+}
+
+.marquee-track {
+  display: flex;
+  width: fit-content;
+  animation: scrollMarquee 25s linear infinite;
+}
+
+.marquee-text {
+  font-family: var(--font-mono);
+  font-size: 7rem;
+  font-weight: 900;
+  color: transparent;
+  -webkit-text-stroke: 2px rgba(15, 23, 42, 0.08); 
+  white-space: nowrap;
+  padding-right: 2rem;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* Hovering the Marquee makes it GLITCH and POP */
+.marquee-track:hover .marquee-text {
+  color: var(--accent-primary);
+  -webkit-text-stroke: 0px;
+  /* 3D Offset shadow effect */
+  text-shadow: 
+    6px 6px 0px rgba(236, 72, 153, 0.4), /* Pink offset */
+    -6px -6px 0px rgba(245, 158, 11, 0.4); /* Amber offset */
+  transform: scale(1.05);
+}
+
+.marquee-track:hover {
+  /* Speeds up the scroll when hovered */
+  animation: scrollMarquee 10s linear infinite;
+}
+
+@keyframes scrollMarquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
 }

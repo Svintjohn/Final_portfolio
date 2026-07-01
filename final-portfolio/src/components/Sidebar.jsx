@@ -14,8 +14,7 @@ export default function Sidebar() {
     <aside className="glass-card" style={{
       position: 'fixed', top: '2rem', left: '2rem', width: '35%', height: 'calc(100vh - 4rem)',
       padding: '4rem', display: 'flex', flexDirection: 'column', 
-      justifyContent: 'space-between', zIndex: 10,
-      borderRight: 'none'
+      justifyContent: 'space-between', zIndex: 10, borderRight: 'none'
     }}>
       <div>
         <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '2rem' }}>
@@ -42,21 +41,14 @@ export default function Sidebar() {
       <nav style={{ display: 'flex', flexDirection: 'column', gap: '1.2rem' }}>
         {navLinks.map((link) => (
           <a 
-            key={link.id} 
-            href={link.id}
+            key={link.id} href={link.id}
             style={{ 
               textDecoration: 'none', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', 
               fontSize: '0.9rem', fontWeight: 600, letterSpacing: '1px', width: 'max-content',
               transition: 'all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)' 
             }}
-            onMouseEnter={(e) => { 
-              e.currentTarget.style.color = 'var(--text-main)'; 
-              e.currentTarget.style.transform = 'translateX(15px) scale(1.05)'; 
-            }}
-            onMouseLeave={(e) => { 
-              e.currentTarget.style.color = 'var(--text-muted)'; 
-              e.currentTarget.style.transform = 'translateX(0) scale(1)'; 
-            }}
+            onMouseEnter={(e) => { e.currentTarget.style.color = 'var(--text-main)'; e.currentTarget.style.transform = 'translateX(15px) scale(1.05)'; }}
+            onMouseLeave={(e) => { e.currentTarget.style.color = 'var(--text-muted)'; e.currentTarget.style.transform = 'translateX(0) scale(1)'; }}
           >
             {link.name}
           </a>
@@ -64,15 +56,9 @@ export default function Sidebar() {
       </nav>
 
       <div style={{ display: 'flex', gap: '1.5rem' }}>
-        <a href="https://github.com/Svintjohn" target="_blank" rel="noreferrer" style={{ color: 'var(--text-main)', transition: 'all 0.3s' }} onMouseEnter={e => e.currentTarget.style.transform = 'translateY(-5px)'} onMouseLeave={e => e.currentTarget.style.transform = 'translateY(0)'}>
-          <FaGithub size={28} />
-        </a>
-        <a href="https://www.linkedin.com/in/john-benedict-berceles-8787b0228" target="_blank" rel="noreferrer" style={{ color: 'var(--accent-primary)', transition: 'all 0.3s' }} onMouseEnter={e => e.currentTarget.style.transform = 'translateY(-5px)'} onMouseLeave={e => e.currentTarget.style.transform = 'translateY(0)'}>
-          <FaLinkedin size={28} />
-        </a>
-        <a href="mailto:bercelesjohnbenedict25@gmail.com" style={{ color: 'var(--accent-secondary)', transition: 'all 0.3s' }} onMouseEnter={e => e.currentTarget.style.transform = 'translateY(-5px)'} onMouseLeave={e => e.currentTarget.style.transform = 'translateY(0)'}>
-          <Mail size={28} />
-        </a>
+        <a href="https://github.com/Svintjohn" target="_blank" rel="noreferrer" style={{ color: 'var(--text-main)', transition: 'all 0.3s' }} onMouseEnter={e => e.currentTarget.style.transform = 'translateY(-5px)'} onMouseLeave={e => e.currentTarget.style.transform = 'translateY(0)'}><FaGithub size={28} /></a>
+        <a href="https://www.linkedin.com/in/john-benedict-berceles-8787b0228" target="_blank" rel="noreferrer" style={{ color: 'var(--accent-primary)', transition: 'all 0.3s' }} onMouseEnter={e => e.currentTarget.style.transform = 'translateY(-5px)'} onMouseLeave={e => e.currentTarget.style.transform = 'translateY(0)'}><FaLinkedin size={28} /></a>
+        <a href="mailto:bercelesjohnbenedict25@gmail.com" style={{ color: 'var(--accent-secondary)', transition: 'all 0.3s' }} onMouseEnter={e => e.currentTarget.style.transform = 'translateY(-5px)'} onMouseLeave={e => e.currentTarget.style.transform = 'translateY(0)'}><Mail size={28} /></a>
       </div>
     </aside>
   );

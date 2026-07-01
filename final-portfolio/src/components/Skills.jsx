@@ -1,54 +1,74 @@
 import React, { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 
-export default function Cursor() {
-  const cursorRef = useRef(null);
+// Pinalitan natin ng HEX codes ang unang tatlo para gumana yung gradient transparency!
+const skills = [
+  { name: 'Python (Pandas, NumPy, SciPy)', level: 92, color: '#2563eb' }, /* Royal Blue */
+  { name: 'Advanced Excel', level: 90, color: '#ec4899' }, /* Pink */
+  { name: 'Power BI & Data Visualization', level: 85, color: '#f59e0b' }, /* Amber */
+  { name: 'Backend Integration', level: 85, color: '#10b981' }, /* Emerald */
+  { name: 'SQL / Database Mgt', level: 84, color: '#8b5cf6' }, /* Violet */
+];
+
+export default function Skills() {
+  const sectionRef = useRef(null);
 
   useEffect(() => {
-    const cursor = cursorRef.current;
-    
-    const xTo = gsap.quickTo(cursor, "x", { duration: 0.15, ease: "power3.out" });
-    const yTo = gsap.quickTo(cursor, "y", { duration: 0.15, ease: "power3.out" });
+    const bars = sectionRef.current.querySelectorAll('.skill-bar-fill');
+    const numbers = sectionRef.current.querySelectorAll('.skill-number');
 
-    const move = (e) => { xTo(e.clientX); yTo(e.clientY); };
-    window.addEventListener("mousemove", move);
-
-    const initHoverEffects = () => {
-      const interactables = document.querySelectorAll('a, button');
-      interactables.forEach(el => {
-        el.addEventListener('mouseenter', () => {
-          gsap.to(cursor, { 
-            scale: 3, 
-            backgroundColor: 'rgba(37, 99, 235, 0.1)', 
-            border: '2px solid var(--accent-primary)', 
-            duration: 0.3, ease: "back.out(2)"
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          // Animation para humaba ang bar
+          bars.forEach(bar => {
+            gsap.to(bar, { width: bar.dataset.width, duration: 1.5, ease: "power4.out", delay: 0.1 });
           });
-        });
-        el.addEventListener('mouseleave', () => {
-          gsap.to(cursor, { 
-            scale: 1, 
-            backgroundColor: 'var(--accent-primary)', 
-            border: 'none', 
-            duration: 0.3 
+          // Animation para pumalo pataas ang number text
+          numbers.forEach(num => {
+            gsap.to(num, { innerHTML: num.dataset.target, duration: 1.5, snap: { innerHTML: 1 }, ease: "power4.out", delay: 0.1 });
           });
-        });
+          observer.unobserve(entry.target);
+        }
       });
-    };
+    }, { threshold: 0.4 });
 
-    setTimeout(initHoverEffects, 1000);
-
-    return () => window.removeEventListener("mousemove", move);
+    if (sectionRef.current) observer.observe(sectionRef.current);
+    return () => observer.disconnect();
   }, []);
 
   return (
-    <div 
-      ref={cursorRef} 
-      style={{ 
-        position: 'fixed', top: 0, left: 0, width: '16px', height: '16px', 
-        borderRadius: '50%', backgroundColor: 'var(--accent-primary)', 
-        pointerEvents: 'none', zIndex: 9999, transform: 'translate(-50%, -50%)',
-        boxShadow: '0 4px 10px rgba(37, 99, 235, 0.4)'
-      }} 
-    />
+    <section id="skills" ref={sectionRef} className="section-padding reveal-on-scroll">
+      <h3 className="mono-tag" style={{ marginBottom: '3rem' }}>// TECHNICAL_CAPABILITIES</h3>
+      
+      <div className="glass-card" style={{ padding: '3rem', display: 'flex', flexDirection: 'column', gap: '2.5rem' }}>
+        {skills.map(s => (
+          <div key={s.name} style={{ cursor: 'none' }} onMouseEnter={(e) => e.currentTarget.querySelector('.skill-bar-fill').style.filter = 'brightness(1.3)'} onMouseLeave={(e) => e.currentTarget.querySelector('.skill-bar-fill').style.filter = 'brightness(1)'}>
+            
+            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1rem', fontWeight: 700 }}>
+              <span style={{ color: 'var(--text-main)', fontSize: '1.1rem' }}>{s.name}</span>
+              <span style={{ fontFamily: 'var(--font-mono)', fontSize: '1.1rem', color: s.color }}>
+                <span className="skill-number" data-target={s.level}>0</span>%
+              </span>
+            </div>
+            
+            <div style={{ height: '14px', background: 'var(--border)', width: '100%', borderRadius: '10px', overflow: 'hidden' }}>
+              <div 
+                className="skill-bar-fill" 
+                data-width={`${s.level}%`} 
+                style={{ 
+                  height: '100%', 
+                  width: '0%', 
+                  background: `linear-gradient(90deg, ${s.color}88, ${s.color})`, 
+                  borderRadius: '10px', 
+                  transition: 'filter 0.3s ease' 
+                }} 
+              />
+            </div>
+            
+          </div>
+        ))}
+      </div>
+    </section>
   );
 }
